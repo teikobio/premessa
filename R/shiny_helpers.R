@@ -90,3 +90,22 @@ paneleditor_GUI <- function(launch.browser = TRUE, ...) {
                   launch.browser = launch.browser, ...)
 }
 
+#' Starts the quick barcoder GUI
+#'
+#' Upon starting, a GUI will open in your browser. You should select the samples metadata file
+#' you plan to barcode. This file should at least include the subject ids. The GUI will allow
+#' you to select stratification variables from the remaining columns in the metadata,
+#' the number of available slots per batch, and set the number of simulations to run
+#' before terminating the algorithm.
+#' The tool will sort the samples into batches keeping samples from the same subject together,
+#' while trying to balance the samples by the selected stratification variable within the
+#' respective batches. It will then preview the batch sorting as a stacked barplot.
+#'
+#' If you are happy with the batch sorting, you can then download the metadata with PID,
+#' and barcode added.
+#'
+#' @export
+quickbarcoder_GUI <- function(launch.browser = TRUE, ...) {
+    shiny::runApp(appDir = file.path(system.file(package = "premessa"), "quickbarcoder_shinyGUI"),
+                  launch.browser = launch.browser, ...)
+}
