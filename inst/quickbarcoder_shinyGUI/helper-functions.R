@@ -7,12 +7,12 @@ auto_barcode <- function(samples.metadata,
     ## Set strata group variable
     samples.metadata <- samples.metadata %>% unite('strata.group',all_of(strata.vars),sep='_')
     strata.tab <- unique(samples.metadata[,c('subject.id','strata.group')]) %>%
-        mutate(N=table(samples.metadata$subject.id),batch=NA)
+        dplyr::mutate(N=table(samples.metadata$subject.id),batch=NA)
 
     # global proportions
     global.props <- data.frame(table(strata.tab$strata.group)) %>%
-        rename(strata.group=Var1,gfreq=Freq) %>%
-        mutate(gfreq=gfreq/sum(gfreq))
+        dplyr::rename(strata.group=Var1,gfreq=Freq) %>%
+        dplyr::mutate(gfreq=gfreq/sum(gfreq))
 
 
 
@@ -39,13 +39,13 @@ auto_barcode <- function(samples.metadata,
 
         # Calculate proportionality score
         batch.freq <- strata.tab %>%
-            group_by(strata.group,batch) %>%
-            summarize(freq=n()) %>%
-            mutate(freq = freq/sum(freq))
+            dplyr::group_by(strata.group,batch) %>%
+            dplyr::summarize(freq=n()) %>%
+            dplyr::mutate(freq = freq/sum(freq))
 
         strata.tab <- data.frame(strata.tab) %>% merge(global.props,by='strata.group') %>%
             merge(batch.freq,by=c('strata.group','batch')) %>%
-            mutate(diff = abs(gfreq-freq))
+            dplyr::mutate(diff = abs(gfreq-freq))
     }
 
 
